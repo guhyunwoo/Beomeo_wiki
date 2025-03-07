@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "tbl_user")
-@Entity
+@Entity(name = "tbl_user")
 public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -43,5 +42,4 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         return this;
     }
-
 }
