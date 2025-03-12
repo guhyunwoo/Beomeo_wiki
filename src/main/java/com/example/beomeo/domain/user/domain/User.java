@@ -5,12 +5,12 @@ import com.example.beomeo.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Entity(name = "tbl_user")
 public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class User extends BaseEntity {
 
     @Size(max = 20)
     @Column(nullable = false, unique = true, length = 20)
-    private String nickname;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -31,15 +31,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    public User(String email, String nickname, String password, Authority authority) {
-        this.email = email;
-        this.nickname = nickname;
+    public void update(String username, String password) {
+        this.username = username;
         this.password = password;
-        this.authority = authority;
-    }
-
-    public User update(String nickname) {
-        this.nickname = nickname;
-        return this;
     }
 }
