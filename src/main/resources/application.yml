@@ -16,3 +16,15 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: ${token}
+jwt:
+  access-time: ${JWT.ACCESS.TIME}
+  refresh-time: ${JWT.REFRESH.TIME}
+  prefix: ${JWT.PREFIX}
+  header: ${JWT.HEADER}
+  secret-key: ${JWT.SECRET.KEY}
+
