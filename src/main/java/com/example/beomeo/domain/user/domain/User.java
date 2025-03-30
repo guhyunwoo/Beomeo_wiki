@@ -4,8 +4,8 @@ import com.example.beomeo.domain.user.domain.type.Authority;
 import com.example.beomeo.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,26 +13,30 @@ import lombok.*;
 @Builder
 @Entity(name = "tbl_user")
 public class User extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Email
-    @Size(max = 320)
-    @Column(nullable = false, unique = true, length = 320)
-    private String email;
-
-    @Size(max = 20)
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
     private String password;
+
+    @Email
+    @Column(unique = true)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-    public void update(String username, String password) {
+    User(String username, String password, String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.authority = Authority.USER;
+    }
+
+    void changeAuthority() {
+        this.authority = Authority.ADMIN;
     }
 }

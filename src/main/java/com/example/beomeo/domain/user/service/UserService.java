@@ -3,8 +3,8 @@ package com.example.beomeo.domain.user.service;
 import com.example.beomeo.domain.user.domain.User;
 import com.example.beomeo.domain.user.domain.dto.SignupRequestDTO;
 import com.example.beomeo.domain.user.domain.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,19 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화
+    private final HttpServletResponse httpServletResponse;
 
     @Transactional
     public void signup(SignupRequestDTO request) {
-        String encodedPassword = passwordEncoder.encode(request.getPassword()); // 비밀번호 암호화
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException("중복된 username 입니다.");
+        } else if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("중복된 email 입니다.");
+        }
 
         User user = User.builder()
-                .email(request.getEmail())
                 .username(request.getUsername())
-                .password(encodedPassword) // 암호화된 비밀번호 저장
-                .authority(request.getAuthority())
+                .password(request.getPassword())
+                .email(request.getEmail())
                 .build();
 
-        userRepository.save(user); // DB에 저장
+        userRepository.save(user);
     }
 }

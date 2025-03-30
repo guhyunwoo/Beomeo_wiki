@@ -1,15 +1,24 @@
 package com.example.beomeo.global.config;
 
-import org.springframework.boot.autoconfigure.security.oauth2.server.servlet.OAuth2AuthorizationServerJwtAutoConfiguration;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter authenticationFilter;
-
+    @Bean
+    SecurityWebFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors()
+                .
+        return http.build();
+    }
 }
